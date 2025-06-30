@@ -1,22 +1,29 @@
 import tkinter as tk
 import customtkinter as ctk
 import requests
+from tkinter import messagebox
 def onClick():
-    api_key="your api key"
+    api_key="Your_Api_key"
     currency1=dropdown1.get()
     currency2=dropdown2.get()
-    number=textbox.get("0.0", "end").strip()
-    amount=int(number)
+    number=int(textbox.get("0.0", "end").strip())
     url=f"https://v6.exchangerate-api.com/v6/{api_key}/latest/{currency1}"
     response=requests.get(url)
     data=response.json()
-    if response.status_code == 200:
-        currency3=data["conversion_rates"][currency2]
-        exchange_rate=data["conversion_rates"][currency1]
-        output=exchange_rate*currency3
-        final=amount*output
-        textbox2.insert("0.0",final)
-    
+    if  number==0:
+         messagebox.showerror("Input error","Input not given")
+    else:
+            if response.status_code==200:
+                 currency3=data["conversion_rates"][currency2]
+                 exchange_rate=data["conversion_rates"][currency1]
+                 output=exchange_rate*currency3
+                 final=number*output
+                 textbox2.configure(state='normal')
+                 textbox2.insert("0.0",final)
+                 textbox2.configure(state='disabled')
+            else:
+                  messagebox.showerror("Server Error","There was internal error, pleas try again later!")
+                  
 app = ctk.CTk()
 app.title("Currency Conversion")
 app.geometry("600x300")
@@ -86,7 +93,9 @@ textbox2 = ctk.CTkTextbox(master=innerFrame2,
                          )
 # textbox2.configure(state="disabled")
 textbox2.pack(pady=10, padx=20)
+textbox2.configure(state='disabled')
 
 btn=ctk.CTkButton(app, text="Convert",command=onClick )
 btn.pack(padx=10, pady=10)
+textbox.insert("1.0", "0")
 app.mainloop()
