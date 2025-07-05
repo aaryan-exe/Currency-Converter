@@ -3,7 +3,7 @@ import customtkinter as ctk
 import requests
 from tkinter import messagebox
 def onClick():
-    api_key="Your_Api_key"
+    api_key="Your_API_Key"
     currency1=dropdown1.get()
     currency2=dropdown2.get()
     number=int(textbox.get("0.0", "end").strip())
